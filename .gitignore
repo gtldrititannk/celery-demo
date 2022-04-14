@@ -7,3 +7,5 @@ django_celery_demo/django_celery_demo/settings/local.py
 django_celery_demo/db.sqlite3
 
 Pipfile.lock
+
+django_celery_demo/celerybeat-schedule
