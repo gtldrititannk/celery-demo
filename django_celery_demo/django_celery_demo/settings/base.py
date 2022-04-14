@@ -2,6 +2,8 @@ from pathlib import Path
 import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+from celery.schedules import crontab
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 
@@ -19,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'my_app',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -102,5 +105,21 @@ MEDIA_URL = "/media/"
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # celery
+# CELERY_RESULT_BACKEND = 'django-db'
 CELERY_BROKER_URL = 'amqp://localhost'
+
+# Don't use pickle as serializer, json is much safer
+CELERY_TASK_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ['application/json']
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+CELERY_BEAT_SCHEDULE = {
+    # Executes in every 1 minute
+    'send-notification-in-every-one-minute': {
+         'task': 'my_app.tasks.send_notification',
+         'schedule': crontab(),
+        }
+}
+
 
