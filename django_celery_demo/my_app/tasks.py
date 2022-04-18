@@ -1,4 +1,5 @@
 import string
+import datetime
 
 from celery import shared_task
 from django.contrib.auth.models import User
@@ -20,4 +21,9 @@ def create_random_user_accounts(total):
 @celery_app.task(bind=True)
 def send_notification(self):
     print("\n\n Hi am notification !")
+    print("\n\n Datetime Now [Date] --> ", datetime.datetime.now().date())
+    print("\n\n Datetime Now [Time] --> ", datetime.datetime.now().time())
+    print("\n\n Datetime Now [Hour] --> ", datetime.datetime.now().time().hour)
+    print("\n\n Datetime Now [Minute] --> ", datetime.datetime.now().time().minute)
+    print("\n\n Datetime After Adding 15 Minutes --> ", datetime.datetime.now() + datetime.timedelta(minutes=15))
     return 'Notification Sent!'
